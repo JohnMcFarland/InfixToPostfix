@@ -16,6 +16,10 @@ using namespace std;
 bool isOperator(char c);
 double evaluate(char optr, double operand1, double operand2);
 
+
+//I:Takes in a postfix expression.
+//P:Evaluates the postfix expression
+//O:Returns the value of the expression as a double
 double evalPostfix(string exp) {
 	stack<double> evalStack;
 
@@ -26,22 +30,22 @@ double evalPostfix(string exp) {
 		 	while (pos < exp.length() && isspace(exp[pos]))	
 				pos++;
 		}
-	// ------- Operands (numbers)
-	else if (isdigit(exp[pos])) {
-		stringstream ss;	// Used for the conversion
-		while (pos < exp.length() && isdigit(exp[pos])) {
-			ss << exp[pos];	// Building up the token in the stream
-			pos++;
-			if(pos < exp.length() && exp[pos] == '.'){
-				ss << '.';
+		// ------- Operands (numbers)
+		else if (isdigit(exp[pos])) {
+			stringstream ss;	// Used for the conversion
+			while (pos < exp.length() && isdigit(exp[pos])) {
+				ss << exp[pos];	// Building up the token in the stream
 				pos++;
+				if(pos < exp.length() && exp[pos] == '.'){
+					ss << '.';
+					pos++;
+				}
 			}
+			int num;
+			ss >> num;	// Extracting the number from the stream
+			evalStack.push(num);
 		}
-		int num;
-		ss >> num;	// Extracting the number from the stream
-		evalStack.push(num);
-	}
-	else if (isOperator(exp[pos])) {
+		else if (isOperator(exp[pos])) {
 			char optr = exp[pos];
 			if (evalStack.empty()) throw EvalException("Missing operand");
 			double operand2 =  evalStack.top();
@@ -65,11 +69,15 @@ double evalPostfix(string exp) {
 }
 
 
-
+//Defines a string containing all available operators. 
 const string OPERATOR_STRING = "+-*/^";
 
+//Checks to see if a character is an operator. 
 bool isOperator(char c) {return OPERATOR_STRING.find(c) != string::npos;}
 
+//I:Takes in two operands and an operator
+//P:Uses the operator to evaluate the operands
+//O:A value based on the calculation
 double evaluate(char optr, double operand1, double operand2) {
 	switch (optr) {
 		case '+': return operand1 + operand2;
