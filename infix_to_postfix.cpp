@@ -13,6 +13,10 @@ using namespace std;
 bool isOperator(char c);
 int precLevel(char optr);
 
+//Function to convert the infix expression to a postfix expression
+//I:Takes in an infix expression. 
+//P:Uses a stack to reorder the characters in the expression from infix to postfix.
+//O:Returns a postfix expression ready to be evaluated. 
 string infixToPostfix(string infix) {
 	stack<char> opStack;
 
@@ -77,6 +81,7 @@ string infixToPostfix(string infix) {
 	return postfix;
 }
 
+//Details and determines an operators precedence level
 int precLevel(char optr) {
 	switch (optr) {
 		case '+': return 1;
@@ -87,6 +92,7 @@ int precLevel(char optr) {
 	}
 }		
 
+//Determines is the operand is left associative. 
 bool isLeftAssociative (char optr){
 
 	switch (optr) {
